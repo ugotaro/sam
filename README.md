@@ -13,6 +13,10 @@ This is the fork repository of SAM(davda54/sam) for using GradScaler in PyTorch.
 ## Usage
 
 ```python
+
+scaler = GradScaler()
+
+...
 for i, data in enumerate(dataloader, 0):
     # get the inputs; data is a list of [inputs, labels]
     inputs, labels, paths = data
@@ -20,7 +24,6 @@ for i, data in enumerate(dataloader, 0):
     labels = labels.cuda()
 
     with autocast():
-        # forward + backward + optimize
         outputs = net(inputs)
         loss = criterion(outputs, labels)
     scaler.scale(loss).backward()
@@ -35,11 +38,13 @@ for i, data in enumerate(dataloader, 0):
     scaler.step(optimizer, is_first=False, zero_grad=False)
     scaler.update()
     optimizer.zero_grad()
+    ... 
 ```
 
 <br>
 
 Below is the original README.md
+--------------
 <br>
 
 SAM simultaneously minimizes loss value and loss sharpness. In particular, it seeks parameters that lie in **neighborhoods having uniformly low loss**. SAM improves model generalization and yields [SoTA performance for several datasets](https://paperswithcode.com/paper/sharpness-aware-minimization-for-efficiently-1). Additionally, it provides robustness to label noise on par with that provided by SoTA procedures that specifically target learning with noisy labels.
